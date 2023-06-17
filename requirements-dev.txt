@@ -1,1 +1,4 @@
-pylint==2.7.14
+pylint
+deptree
+pip-tools
+urllib3<2
