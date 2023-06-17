@@ -6,6 +6,8 @@ Deploy simple lambda and instructions to test third party dependencies.
 
 ## Pre-requisites
 
+Read [AWS instructions](https://docs.aws.amazon.com/lambda/latest/dg/python-package.html) and understand how lambda works and what are limitations.
+
 Make sure you have configured AWS profile. If you wish to execute python file from your local machine, your default AWS profile must have access to S3 buckets (read only).
 
 Running lambda on AWS, requires at least a role with following permission: `AmazonS3ReadOnlyAccess`.
@@ -72,4 +74,4 @@ Then I installed all safe packages using generated results.txt:
 `pip install -r results.txt`
 
 Then I installed required packages for my zip file:
-`pip install --target . requests=2.31.0 urllib=1.26.16
+`pip install --target . requests=2.31.0 urllib=1.26.16`
