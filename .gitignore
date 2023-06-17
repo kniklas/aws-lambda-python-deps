@@ -1,4 +1,5 @@
 *.sw[op]
 *.zip
 pack/*
+packages/*
 results.txt

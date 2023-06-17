@@ -2,9 +2,37 @@
 
 Deploy simple lambda and instructions to test third party dependencies.
 
-# Learning points
+# Deployment
 
-## botocore and urllib compatibility issues
+## Pre-requisites
+
+Make sure you have configured AWS profile. If you wish to execute python file from your local machine, your default AWS profile must have access to S3 buckets (read only).
+
+Running lambda on AWS, requires at least a role with following permission: `AmazonS3ReadOnlyAccess`.
+
+In order to identify right versions of third-party libraries to be installed, follow *Common issues* section of this readme.
+
+
+### Prepare zip package with dependencies
+
+Make sure you are on root folder of your repository.
+1. `mkdir packages` to create `packages` folder to put your dependencies there.
+2. `pip install --target packages/ requests==2.31.0 urllib3==1.26.16` to install dependencies in right versions
+3. `cd packages && zip -r packackages.zip .` to zip all dependencies
+4. `cd .. && zip packages.zip lambda_function.py` to add lambda python file to zip
+
+### Deploy to AWS
+
+`ws lambda create-function --function-name get-s3-new --zip-file fileb://packages.zip --runtime python3.9 --handler lambda_function.lambda_handler --role arn:aws:iam::XXXXXXXXXXXX:role/S3_ReadOnly_for_lambda`
+
+* `--function-name` is your lambda function name
+* `--handles` make sure your handler is in line with you python file name and handler function name
+* `--role` use your created role name as explained in preconditions
+
+
+# Common issues
+
+## botocore and urllib3 compatibility issues
 
 Let's assume you would like to add *requests* package to your zip file.
 
@@ -29,7 +57,7 @@ I have installed following tools:
 * pipdeptree (command: `deptree`)
 * pip-tools (command: `pip-compile`)
 
-and used primarily `pip-compile`, specifically command: `pip-compile -r -v
+I used primarily `pip-compile`, specifically command: `pip-compile -r -v
 requirements.txt requirements-dev.txt --output-file results.txt`
 
 This generated 'safe' result of dependencies in `results.txt`.
